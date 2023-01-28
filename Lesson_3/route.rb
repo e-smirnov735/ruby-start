@@ -1,23 +1,24 @@
 # frozen_string_literal: true
 
+# class Route
 class Route
-  attr_reader :station_list
+  attr_reader :stations
 
   def initialize(start, finish)
     @start = start
     @finish = finish
-    @station_list = [@start, @finish]
+    @stations = [@start, @finish]
   end
 
   def add_station(station)
-    @station_list.insert(-1, station)
+    @stations.insert(1, station)
   end
 
   def remove_station(station)
-    @station_list.delete(station)
+    @stations.delete(station)
   end
 
   def show_stations
-    @station_list.each { |st| puts st }
+    @stations.each { |st| puts st }
   end
 end

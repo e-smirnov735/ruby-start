@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# class Train
 class Train
   attr_reader :speed, :carriage_count, :type
 
@@ -12,34 +13,34 @@ class Train
 
     return unless route
 
-    station_list(route)
+    stations(route)
     add_train_to_start_station
     @station_index = station_index
   end
 
   def route=(route)
     @route = route
-    station_list(route)
+    stations(route)
     add_train_to_start_station
     @station_index = station_index
   end
 
-  def station_list(route)
-    @station_list = route.station_list
+  def stations(route)
+    @stations = route.stations
   end
 
   def add_train_to_start_station
-    @station_list.first.add_train(self)
+    @stations.first.add_train(self)
   end
 
   def go_to_next_station
-    if @station_index == @station_list.size - 1
+    if @station_index == @stations.size - 1
       puts 'конечная станция'
       return
     end
 
-    @station_list[@station_index].remove_train(self)
-    @station_list[@station_index + 1].add_train(self)
+    @stations[@station_index].remove_train(self)
+    @stations[@station_index + 1].add_train(self)
     @station_index += 1
   end
 
@@ -49,22 +50,22 @@ class Train
       return
     end
 
-    @station_list[@station_index].remove_train(self)
-    @station_list[@station_index - 1].add_train(self)
+    @stations[@station_index].remove_train(self)
+    @stations[@station_index - 1].add_train(self)
     @station_index = -1
   end
 
   def current_station
-    @station_list[@station_index]
+    @stations[@station_index]
   end
 
   def next_station
-    if @station_index == @station_list.size - 1
+    if @station_index == @stations.size - 1
       puts 'конечная станция'
       return
     end
 
-    @station_list[@station_index + 1]
+    @stations[@station_index + 1]
   end
 
   def previous_station
@@ -73,7 +74,7 @@ class Train
       return
     end
 
-    @station_list[@station_index - 1]
+    @stations[@station_index - 1]
   end
 
   def add_carriage
@@ -108,7 +109,7 @@ class Train
 
   def station_index
     idx = 0
-    @station_list.each_with_index { |st, i| idx = i if st.train_list.include?(self) }
+    @stations.each_with_index { |st, i| idx = i if st.trains.include?(self) }
     idx
   end
 end

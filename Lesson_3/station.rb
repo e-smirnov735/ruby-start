@@ -1,23 +1,25 @@
 # frozen_string_literal: true
+
 require_relative 'train'
 
+# class Station
 class Station
-  attr_reader :train_list
+  attr_reader :trains
 
   def initialize(name)
     @name = name
-    @train_list = []
+    @trains = []
   end
 
   def show_trains_by_type(type)
-    @train_list.select { |x| x.type == type }
+    @trains.select { |x| x.type == type }
   end
 
   def add_train(train)
-    @train_list.push(train) if train.is_a?(Train)
+    @trains.push(train) if train.is_a?(Train)
   end
 
   def remove_train(train)
-    @train_list.delete(train) if train.is_a?(Train)
+    @trains.delete(train) if train.is_a?(Train)
   end
 end

@@ -1,15 +1,17 @@
 # frozen_string_literal: true
 
+require_relative 'carriage'
+
 # class Train
 class Train
-  attr_reader :speed, :carriage_count, :type
+  attr_reader :speed, :type, :carriages, :number
 
-  def initialize(number, type, carriage_count = 0, route = nil)
+  def initialize(number, carriages = [], route = nil)
     @number = number
-    @type = type
-    @carriage_count = carriage_count
     @speed = 0
     @route = route
+    @carriages = carriages
+    @type = 'default'
 
     return unless route
 
@@ -35,7 +37,7 @@ class Train
 
   def go_to_next_station
     if @station_index == @stations.size - 1
-      puts 'конечная станция'
+      puts 'ошибка: конечная станция.'
       return
     end
 
@@ -46,7 +48,7 @@ class Train
 
   def go_to_previous_station
     if @station_index.zero?
-      puts 'начальная станция.'
+      puts 'ошибка: начальная станция.'
       return
     end
 
@@ -61,7 +63,7 @@ class Train
 
   def next_station
     if @station_index == @stations.size - 1
-      puts 'конечная станция'
+      puts 'ошибка; поезд на конечной станции'
       return
     end
 
@@ -70,31 +72,36 @@ class Train
 
   def previous_station
     if @station_index.zero?
-      puts 'начальная станция.'
+      puts 'ошибка: поезд на начальной станции.'
       return
     end
 
     @stations[@station_index - 1]
   end
 
-  def add_carriage
-    puts 'поезд в движении. Прицепить вагон невозможно' unless @speed.zero?
+  def add_carriage(carriage)
+    puts 'ошибка: поезд в движении. Прицепить вагон невозможно' unless @speed.zero?
 
-    self.carriage_count += 1
+    if carriage.type != type
+      puts 'ошибка: Несовместимый тип вагона'
+      return
+    end
+
+    @carriages.push(carriage)
   end
 
   def remove_carriage
-    unless @speed.zero?
-      puts 'поезд в движении. Прицепить вагон невозможно'
+    if @speed.positive?
+      puts 'ошибка: поезд в движении. Прицепить вагон невозможно'
       return
     end
 
-    unless @carriage_count.positive?
-      puts 'Нет вагонов, которые можно отцепить'
+    if @carriages.empty?
+      puts 'ошибка: Нет вагонов, которые можно отцепить'
       return
     end
 
-    self.carriage_count -= 1
+    @carriages.pop
   end
 
   def up_speed
@@ -105,7 +112,11 @@ class Train
     @speed = 0
   end
 
-  private
+  def to_s
+    "Поезд №#{@number}\tтип: #{@type}\tвагонов: #{@carriages.size}"
+  end
+
+  protected # метод необходим только самому классу и потомкам
 
   def station_index
     idx = 0

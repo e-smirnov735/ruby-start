@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-require_relative '../route'
-require_relative '../station'
-require_relative '../passenger_train'
-require_relative '../cargo_train'
-require_relative '../cargo_carriage'
-require_relative '../passenger_carriage'
+require_relative 'station'
+require_relative 'passenger_train'
+require_relative 'cargo_train'
+require_relative 'cargo_carriage'
+require_relative 'passenger_carriage'
 
 # Storage class
 class Storage

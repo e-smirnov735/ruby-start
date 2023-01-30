@@ -1,9 +1,15 @@
 # frozen_string_literal: true
 
-class Wagon
-  def initialize(type)
-    @type = type
+# Carriage base
+class Carriage
+  attr_reader :type
 
+  def initialize
+    @type = 'default'
   end
 
 end
+
+
+
+

@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
+require_relative 'station'
+
 # class Route
 class Route
-  attr_reader :stations
+  attr_reader :stations, :name
 
   def initialize(start, finish)
     @start = start
     @finish = finish
     @stations = [@start, @finish]
+    @name = "#{@start.name} - #{@finish.name}"
   end
 
   def add_station(station)
@@ -19,6 +22,10 @@ class Route
   end
 
   def show_stations
-    @stations.each { |st| puts st }
+    @stations.map(&:name).join(' - ')
+  end
+
+  def to_s
+    show_stations
   end
 end

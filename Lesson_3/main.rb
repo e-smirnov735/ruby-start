@@ -22,79 +22,112 @@ class Control
   def initialize
     @start_menu = START_MENU
     @storage = Storage.new
-    @query = ''
   end
 
   def start
-    seed
+    seed # загрузка тестовых данных
+
     loop do
       show_menu
-      query = gets.chomp
-      puts @start_menu[query.to_i]
-      case query
-      when '1'
-        puts 'Введите название станции:'
-        name = gets.chomp
-        @storage.create_station(name)
-      when '2'
-        puts 'Введите номер поезда:'
-        train_number = gets.chomp.to_i
-        puts 'Введите тип поезда (cargo / passenger):'
-        train_type = gets.chomp
-        @storage.create_train(train_number, train_type)
-      when '3'
-        puts 'Введите первую станцию: '
-        first = gets.chomp.downcase
-        puts 'Введите конечную станцию: '
-        last = gets.chomp.downcase
-        @storage.create_route(first, last)
-      when '4'
-        puts 'введите номер поезда: '
-        train_number = gets.chomp.to_i
-        puts 'введите маршрут на который поставить поезд в формате: "город - город2": '
-        route_name = gets.chomp
-        @storage.set_route_to_train(route_name, train_number)
-      when '5'
-        puts 'введите номер поезда: '
-        train_number = gets.chomp.to_i
-        puts 'введите тип вагона (cargo / passenger): '
-        carriage_type = gets.chomp
-        @storage.add_carriage_to_train(carriage_type, train_number)
-      when '6'
-        puts 'введите номер поезда: '
-        train_number = gets.chomp.to_i
-        @storage.remove_carriage_from_train(train_number)
-      when '7'
-        puts 'введите номер поезда: '
-        train_number = gets.chomp.to_i
-        @storage.go_to_next_station(train_number)
-      when '8'
-        puts 'введите номер поезда: '
-        train_number = gets.chomp.to_i
-        @storage.go_to_previous_station(train_number)
-      when '9'
-        puts 'введите название станции: '
-        station_name = gets.chomp
-        puts 'введите маршрут на который добавить станцию '
-        route_name = gets.chomp
-        @storage.add_station_to_route(station_name, route_name)
-      when '10'
-        puts 'введите название станции: '
-        station_name = gets.chomp
-        puts 'введите маршрут из которого убрать станцию'
-        route_name = gets.chomp
-        @storage.remove_station_on_route(station_name, route_name)
-      when '11'
-        @storage.show_info
-      when '0'
-        break
-      else
-        puts 'Неправильная команда, попробуйте еще'
-      end
+      user_input = gets.chomp
+      puts @start_menu[user_input.to_i]
+      break if action(user_input) == 'exit'
     end
   end
 
   private # необходим только внутри класса
+
+  def action(user_input)
+    case user_input
+    when '1' then add_station
+    when '2' then add_train
+    when '3' then add_route
+    when '4' then set_route_to_train
+    when '5' then add_carriage_to_train
+    when '6' then remove_carriage_from_train
+    when '7' then go_to_next_station
+    when '8' then go_to_previous_station
+    when '9' then add_station_to_route
+    when '10' then remove_station_from_route
+    when '11' then @storage.show_info
+    when '0'
+      'exit'
+    else
+      puts "Неправильная команда, попробуйте еще\n"
+    end
+  end
+
+  def add_station
+    puts 'Введите название станции:'
+    name = gets.chomp
+    @storage.create_station(name)
+  end
+
+  def add_train
+    puts 'Введите номер поезда:'
+    train_number = gets.chomp.to_i
+    puts 'Введите тип поезда (cargo / passenger):'
+    train_type = gets.chomp
+    @storage.create_train(train_number, train_type)
+  end
+
+  def add_route
+    puts 'Введите первую станцию: '
+    first = gets.chomp.downcase
+    puts 'Введите конечную станцию: '
+    last = gets.chomp.downcase
+    @storage.create_route(first, last)
+  end
+
+  def set_route_to_train
+    puts 'введите номер поезда: '
+    train_number = gets.chomp.to_i
+    puts 'введите маршрут на который поставить поезд в формате: "город - город2": '
+    route_name = gets.chomp
+    @storage.set_route_to_train(route_name, train_number)
+  end
+
+  def add_carriage_to_train
+    puts 'введите номер поезда: '
+    train_number = gets.chomp.to_i
+    puts 'введите тип вагона (cargo / passenger): '
+    carriage_type = gets.chomp
+    @storage.add_carriage_to_train(carriage_type, train_number)
+  end
+
+  def remove_carriage_from_train
+    puts 'введите номер поезда: '
+    train_number = gets.chomp.to_i
+    @storage.remove_carriage_from_train(train_number)
+  end
+
+  def go_to_next_station
+    puts 'введите номер поезда: '
+    train_number = gets.chomp.to_i
+    @storage.go_to_next_station(train_number)
+  end
+
+  def go_to_previous_station
+    puts 'введите номер поезда: '
+    train_number = gets.chomp.to_i
+    @storage.go_to_previous_station(train_number)
+  end
+
+  def add_station_to_route
+    puts 'введите название станции: '
+    station_name = gets.chomp
+    puts 'введите маршрут на который добавить станцию '
+    route_name = gets.chomp
+    @storage.add_station_to_route(station_name, route_name)
+  end
+
+  def remove_station_from_route
+    puts 'введите название станции: '
+    station_name = gets.chomp
+    puts 'введите маршрут из которого убрать станцию'
+    route_name = gets.chomp
+    @storage.remove_station_on_route(station_name, route_name)
+  end
 
   def seed
     @storage.create_station('msk')

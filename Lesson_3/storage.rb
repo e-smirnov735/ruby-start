@@ -5,6 +5,7 @@ require_relative 'passenger_train'
 require_relative 'cargo_train'
 require_relative 'cargo_carriage'
 require_relative 'passenger_carriage'
+require_relative 'route'
 
 # Storage class
 class Storage
@@ -22,13 +23,9 @@ class Storage
   end
 
   def create_train(train_number, train_type)
-    train = nil
-
     case train_type
-    when 'cargo'
-      train = CargoTrain.new(train_number)
-    when 'passenger'
-      train = PassengerTrain.new(train_number)
+    when 'cargo' then train = CargoTrain.new(train_number)
+    when 'passenger' then train = PassengerTrain.new(train_number)
     else
       puts 'неправильный ввод типа'
       return
@@ -97,10 +94,8 @@ class Storage
     carriage = nil
 
     case carriage_type
-    when 'cargo'
-      carriage = CargoCarriage.new
-    when 'passenger'
-      carriage = PassengerCarriage.new
+    when 'cargo' then carriage = CargoCarriage.new
+    when 'passenger' then carriage = PassengerCarriage.new
     else
       puts 'неправильно задан тип вагона'
     end

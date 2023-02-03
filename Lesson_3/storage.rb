@@ -5,6 +5,7 @@ require_relative 'passenger_train'
 require_relative 'cargo_train'
 require_relative 'cargo_carriage'
 require_relative 'passenger_carriage'
+require_relative 'train'
 require_relative 'route'
 
 # Storage class
@@ -12,8 +13,8 @@ class Storage
   attr_reader :trains, :stations, :routes
 
   def initialize
-    @stations = [Station.new('msk'), Station.new('spb'), Station.new('sochi')]
-    @trains = [CargoTrain.new(111), PassengerTrain.new(222), CargoTrain.new(333)]
+    @stations = []
+    @trains = []
     @routes = []
   end
 

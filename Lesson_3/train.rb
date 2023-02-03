@@ -1,10 +1,19 @@
 # frozen_string_literal: true
 
 require_relative 'carriage'
+require_relative 'manufacturer'
+require_relative 'instance_counter'
 
 # class Train
 class Train
+  include InstanceCounter
+  include Manufacturer
+
+  @@station_instances = []
+
   attr_reader :speed, :type, :carriages, :number
+
+  init_counter
 
   def initialize(number, carriages = [], route = nil)
     @number = number
@@ -12,12 +21,18 @@ class Train
     @route = route
     @carriages = carriages
     @type = 'default'
+    @@station_instances.push(self)
+    register_instance
 
     return unless route
 
     stations(route)
     add_train_to_start_station
     @station_index = station_index
+  end
+
+  def self.find(number)
+    @@station_instances.find { |train| train.number == number }
   end
 
   def route=(route)

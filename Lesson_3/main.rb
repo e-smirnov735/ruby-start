@@ -141,6 +141,12 @@ class Control
     @storage.go_to_next_station(111)
     @storage.go_to_previous_station(111)
     @storage.add_carriage_to_train('passenger', 222)
+    puts('----test---')
+    puts "Количество Станций: #{Station.instances}"
+    puts "Количество маршрутов: #{Route.instances}"
+    puts "Количество поездов: #{Train.instances}"
+    puts('---test---')
+
   end
 
   def show_menu

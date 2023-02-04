@@ -9,7 +9,7 @@ class Train
   include InstanceCounter
   include Manufacturer
 
-  @@station_instances = []
+  @@train_instances = []
 
   attr_reader :speed, :type, :carriages, :number
 
@@ -21,7 +21,7 @@ class Train
     @route = route
     @carriages = carriages
     @type = 'default'
-    @@station_instances.push(self)
+    @@train_instances.push(self)
     register_instance
 
     return unless route
@@ -32,7 +32,7 @@ class Train
   end
 
   def self.find(number)
-    @@station_instances.find { |train| train.number == number }
+    @@train_instances.find { |train| train.number == number }
   end
 
   def route=(route)

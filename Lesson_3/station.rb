@@ -14,6 +14,7 @@ class Station
 
   def initialize(name)
     @name = name
+    validate!
     @trains = []
     @@station_instances.push(self)
     register_instance
@@ -38,4 +39,12 @@ class Station
   def to_s
     "Станция: #{@name}\tколичество поездов: #{trains.size} (#{trains.map(&:number).join(',')})"
   end
+
+  protected
+
+  def validate!
+    raise 'Ошибка: имя не может быть пустым' if name.nil?
+    raise 'Ошибка: слишком короткое имя' if name.length < 3
+  end
+
 end

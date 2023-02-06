@@ -64,8 +64,8 @@ class Control
   end
 
   def add_train
-    puts 'Введите номер поезда:'
-    train_number = gets.chomp.to_i
+    puts 'Введите номер поезда: (формат: ASB-AV | 123-AS)'
+    train_number = gets.chomp
     puts 'Введите тип поезда (cargo / passenger):'
     train_type = gets.chomp
     @storage.create_train(train_number, train_type)
@@ -133,14 +133,14 @@ class Control
     @storage.create_station('msk')
     @storage.create_station('spb')
     @storage.create_station('sochi')
-    @storage.create_train(111, 'cargo')
-    @storage.create_train(222, 'passenger')
+    @storage.create_train('AA1-FF', 'cargo')
+    @storage.create_train('AS3-WW', 'passenger')
     @storage.create_route('msk', 'spb')
     @storage.add_station_to_route('sochi', 'msk - spb')
-    @storage.set_route_to_train('msk - spb', 111)
-    @storage.go_to_next_station(111)
-    @storage.go_to_previous_station(111)
-    @storage.add_carriage_to_train('passenger', 222)
+    @storage.set_route_to_train('msk - spb', 'AA1-FF')
+    @storage.go_to_next_station('AA1-FF')
+    @storage.go_to_previous_station('AA1-FF')
+    @storage.add_carriage_to_train('passenger', 'AS3-WW')
     puts('----test---')
     puts "Количество Станций: #{Station.instances}"
     puts "Количество маршрутов: #{Route.instances}"

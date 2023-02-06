@@ -4,8 +4,8 @@ require_relative 'train'
 
 # Cargo Train
 class CargoTrain < Train
-  def initialize(number, carriages = [], route = nil)
-    super(number, carriages, route)
+  def initialize(number)
+    super(number)
     @type = 'cargo'
   end
 end

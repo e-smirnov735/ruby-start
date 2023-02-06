@@ -4,6 +4,19 @@ require_relative 'carriage'
 require_relative 'manufacturer'
 require_relative 'instance_counter'
 
+TRAIN_ERRORS = {
+  station_last: 'Ошибка: конечная станция',
+  station_first: 'Ошибка: начальная станция',
+  train_on_finish: 'Ошибка; поезд на конечной станции',
+  train_on_start: 'Ошибка: поезд на начальной станции.',
+  train_in_motion: 'Ошибка: поезд в движении. Прицепить вагон невозможно',
+  carriage_wrong_type: 'Ошибка: Несовместимый тип вагона',
+  no_carriages: 'Ошибка: Нет вагонов, которые можно отцепить',
+  number_is_nil: 'Ошибка: номер не может быть пустым',
+  wrong_number: 'Ошибка: неправильный формат номера.'
+}.freeze
+
+NUMBER_EXP = /^[0-9a-z]{3}-?[0-9a-z]{2}$/i.freeze
 # class Train
 class Train
   include InstanceCounter
@@ -11,16 +24,17 @@ class Train
 
   @@train_instances = []
 
-  attr_reader :speed, :type, :carriages, :number
+  attr_reader :speed, :type, :carriages, :number, :route
 
   init_counter
 
-  def initialize(number, carriages = [], route = nil)
+  def initialize(number)
     @number = number
     @speed = 0
-    @route = route
-    @carriages = carriages
+    @route = nil
+    @carriages = []
     @type = 'default'
+    validate!
     @@train_instances.push(self)
     register_instance
 
@@ -51,10 +65,7 @@ class Train
   end
 
   def go_to_next_station
-    if @station_index == @stations.size - 1
-      puts 'ошибка: конечная станция.'
-      return
-    end
+    raise TRAIN_ERRORS[:station_last] if @station_index == @stations.size - 1
 
     @stations[@station_index].remove_train(self)
     @stations[@station_index + 1].add_train(self)
@@ -62,10 +73,7 @@ class Train
   end
 
   def go_to_previous_station
-    if @station_index.zero?
-      puts 'ошибка: начальная станция.'
-      return
-    end
+    raise TRAIN_ERRORS[:station_first] if @station_index.zero?
 
     @stations[@station_index].remove_train(self)
     @stations[@station_index - 1].add_train(self)
@@ -77,44 +85,27 @@ class Train
   end
 
   def next_station
-    if @station_index == @stations.size - 1
-      puts 'ошибка; поезд на конечной станции'
-      return
-    end
+    raise TRAIN_ERRORS[:train_on_finish] if @station_index == @stations.size - 1
 
     @stations[@station_index + 1]
   end
 
   def previous_station
-    if @station_index.zero?
-      puts 'ошибка: поезд на начальной станции.'
-      return
-    end
+    raise TRAIN_ERRORS[:train_on_start] if @station_index.zero?
 
     @stations[@station_index - 1]
   end
 
   def add_carriage(carriage)
-    puts 'ошибка: поезд в движении. Прицепить вагон невозможно' unless @speed.zero?
-
-    if carriage.type != type
-      puts 'ошибка: Несовместимый тип вагона'
-      return
-    end
+    raise TRAIN_ERRORS[:train_in_motion] unless @speed.zero?
+    raise TRAIN_ERRORS[:carriage_wrong_type] if carriage.type != type
 
     @carriages.push(carriage)
   end
 
   def remove_carriage
-    if @speed.positive?
-      puts 'ошибка: поезд в движении. Прицепить вагон невозможно'
-      return
-    end
-
-    if @carriages.empty?
-      puts 'ошибка: Нет вагонов, которые можно отцепить'
-      return
-    end
+    raise TRAIN_ERRORS[:train_in_motion] if @speed.positive?
+    raise TRAIN_ERRORS[:no_carriages] if @carriages.empty?
 
     @carriages.pop
   end
@@ -128,10 +119,15 @@ class Train
   end
 
   def to_s
-    "Поезд №#{@number}\tтип: #{@type}\tвагонов: #{@carriages.size}"
+    "Поезд № #{@number}\tтип: #{@type}\tвагонов: #{@carriages.size}"
   end
 
   protected # метод необходим только самому классу и потомкам
+
+  def validate!
+    raise TRAIN_ERRORS[:number_is_nil] if number.nil?
+    raise TRAIN_ERRORS[:wrong_number] if number !~ NUMBER_EXP
+  end
 
   def station_index
     idx = 0

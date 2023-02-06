@@ -13,6 +13,7 @@ class Route
   def initialize(start, finish)
     @start = start
     @finish = finish
+    validate!
     @stations = [@start, @finish]
     @name = "#{@start.name} - #{@finish.name}"
     register_instance
@@ -32,5 +33,12 @@ class Route
 
   def to_s
     show_stations
+  end
+
+  protected
+
+  def validate!
+    raise 'Ошибка: должно быть передано 2 параметра' if @start.nil? || @finish.nil?
+    raise 'Ошибка: параметры должны быть класса Station' unless @start.is_a?(Station) && @finish.is_a?(Station)
   end
 end

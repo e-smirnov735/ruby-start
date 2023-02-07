@@ -8,6 +8,6 @@ class PassengerCarriage < Carriage
 
   def validate!
     super
-    raise 'Ошибка: неправильный тип вагона ' unless type == 'passenger'
+    raise 'Ошибка: неправильный тип вагона' unless type == 'passenger'
   end
 end

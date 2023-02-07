@@ -2,10 +2,12 @@
 
 require_relative 'train'
 require_relative 'instance_counter'
+require_relative 'validator'
 
 # class Station
 class Station
   include InstanceCounter
+  include Validator
 
   @@station_instances = []
   attr_reader :trains
@@ -39,13 +41,6 @@ class Station
 
   def to_s
     "Станция: #{@name}\tколичество поездов: #{trains.size} (#{trains.map(&:number).join(',')})"
-  end
-
-  def valid?
-    validate!
-    true
-  rescue
-    false
   end
 
   protected

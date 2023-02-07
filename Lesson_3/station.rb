@@ -8,7 +8,8 @@ class Station
   include InstanceCounter
 
   @@station_instances = []
-  attr_reader :trains, :name
+  attr_reader :trains
+  attr_accessor :name
 
   init_counter
 
@@ -38,6 +39,13 @@ class Station
 
   def to_s
     "Станция: #{@name}\tколичество поездов: #{trains.size} (#{trains.map(&:number).join(',')})"
+  end
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
   end
 
   protected

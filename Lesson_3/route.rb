@@ -35,6 +35,13 @@ class Route
     show_stations
   end
 
+  def valid?
+    validate!
+    true
+  rescue
+    false
+  end
+
   protected
 
   def validate!

@@ -24,7 +24,8 @@ class Train
 
   @@train_instances = []
 
-  attr_reader :speed, :type, :carriages, :number, :route
+  attr_reader :speed, :type, :carriages, :route
+  attr_accessor :number
 
   init_counter
 
@@ -120,6 +121,13 @@ class Train
 
   def to_s
     "Поезд № #{@number}\tтип: #{@type}\tвагонов: #{@carriages.size}"
+  end
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
   end
 
   protected # метод необходим только самому классу и потомкам

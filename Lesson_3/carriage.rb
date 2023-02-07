@@ -10,4 +10,17 @@ class Carriage
   def initialize
     @type = 'default'
   end
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
+  end
+
+  protected
+
+  def validate!
+    raise 'Неправильный тип вагона' unless %w[default cargo passenger].include?(type)
+  end
 end

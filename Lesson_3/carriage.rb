@@ -1,21 +1,17 @@
 # frozen_string_literal: true
 
 require_relative 'manufacturer'
+require_relative 'validator'
 
 # Carriage base
 class Carriage
+  include Validator
   include Manufacturer
-  attr_reader :type
 
-  def initialize
-    @type = 'default'
-  end
+  attr_accessor :type
 
-  def valid?
-    validate!
-    true
-  rescue
-    false
+  def initialize(type)
+    @type = type
   end
 
   protected

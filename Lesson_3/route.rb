@@ -2,11 +2,14 @@
 
 require_relative 'station'
 require_relative 'instance_counter'
+require_relative 'validator'
 
 # class Route
 class Route
   include InstanceCounter
+  include Validator
   attr_reader :stations, :name
+  attr_accessor :start, :finish
 
   init_counter
 
@@ -33,13 +36,6 @@ class Route
 
   def to_s
     show_stations
-  end
-
-  def valid?
-    validate!
-    true
-  rescue
-    false
   end
 
   protected

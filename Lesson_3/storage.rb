@@ -42,8 +42,9 @@ class Storage
     raise STORAGE_ERRORS[:wrong_train_type] unless %w[cargo passenger].include?(train_type)
     raise STORAGE_ERRORS[:train_exist] if train_exist?(train_number)
 
-    train = CargoTrain.new(train_number) if train_type == 'cargo'
-    train = PassengerTrain.new(train_number) if train_type == 'passenger'
+    train = CargoTrain.new(train_number, train_type) if train_type == 'cargo'
+    train = PassengerTrain.new(train_number, train_type) if train_type == 'passenger'
+
     @trains.push(train)
     puts "Создан #{train}"
   rescue RuntimeError => e
@@ -88,8 +89,8 @@ class Storage
   def add_carriage_to_train(carriage_type, train_number)
     raise STORAGE_ERRORS[:wrong_carriage_type] unless %w[cargo passenger].include?(carriage_type)
 
-    carriage = CargoCarriage.new if carriage_type == 'cargo'
-    carriage = PassengerCarriage.new if carriage_type == 'passenger'
+    carriage = CargoCarriage.new(carriage_type) if carriage_type == 'cargo'
+    carriage = PassengerCarriage.new(carriage_type) if carriage_type == 'passenger'
     train = find_train(train_number)
     train.add_carriage(carriage)
   rescue RuntimeError => e

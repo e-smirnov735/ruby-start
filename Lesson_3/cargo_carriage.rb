@@ -4,8 +4,10 @@ require_relative 'carriage'
 
 # Cargo Carriage
 class CargoCarriage < Carriage
-  def initialize
+  protected
+
+  def validate!
     super
-    @type = 'cargo'
+    raise 'Ошибка: неправильный тип вагона' unless type == 'cargo'
   end
 end

@@ -146,7 +146,6 @@ class Control
     puts "Количество маршрутов: #{Route.instances}"
     puts "Количество поездов: #{Train.instances}"
     puts('---test---')
-
   end
 
   def show_menu

@@ -3,6 +3,7 @@
 require_relative 'carriage'
 require_relative 'manufacturer'
 require_relative 'instance_counter'
+require_relative 'validator'
 
 TRAIN_ERRORS = {
   station_last: 'Ошибка: конечная станция',
@@ -21,20 +22,21 @@ NUMBER_EXP = /^[0-9a-z]{3}-?[0-9a-z]{2}$/i.freeze
 class Train
   include InstanceCounter
   include Manufacturer
+  include Validator
 
   @@train_instances = []
 
-  attr_reader :speed, :type, :carriages, :route
-  attr_accessor :number
+  attr_reader :speed, :carriages, :route
+  attr_accessor :number, :type
 
   init_counter
 
-  def initialize(number)
+  def initialize(number, type)
     @number = number
     @speed = 0
     @route = nil
     @carriages = []
-    @type = 'default'
+    @type = type
     validate!
     @@train_instances.push(self)
     register_instance
@@ -121,13 +123,6 @@ class Train
 
   def to_s
     "Поезд № #{@number}\tтип: #{@type}\tвагонов: #{@carriages.size}"
-  end
-
-  def valid?
-    validate!
-    true
-  rescue
-    false
   end
 
   protected # метод необходим только самому классу и потомкам

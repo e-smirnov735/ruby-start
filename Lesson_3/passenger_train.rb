@@ -4,8 +4,10 @@ require_relative 'train'
 
 # Passenger Train
 class PassengerTrain < Train
-  def initialize(number)
-    super(number)
-    @type = 'passenger'
+  protected
+
+  def validate!
+    super
+    raise 'Ошибка: неправильный тип вагона !!!' unless type == 'passenger'
   end
 end

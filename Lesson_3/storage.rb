@@ -138,8 +138,6 @@ class Storage
     arr.each { |item| puts "\t#{item}" }
   end
 
-  11
-
   def find_route(name)
     result = @routes.find { |r| r.name == name }
     raise STORAGE_ERRORS[:route_not_found] unless result

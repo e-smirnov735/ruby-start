@@ -24,7 +24,7 @@ class PassengerCarriage < Carriage
   end
 
   def to_s
-    super + "количество мест: #{total_seats}"
+    super + "занято мест: #{free_seats}\tсвободно мест: #{occupied_seats}"
   end
 
   protected

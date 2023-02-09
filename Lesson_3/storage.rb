@@ -155,7 +155,10 @@ class Storage
 
   def show_station_trains(name)
     station = find_station(name)
-    station.iteration { |train| puts train }
+    station.iteration do |train|
+      puts "поезд № #{train.number} тип: #{train.type} кол-во вагонов: #{train.carriages.size}"
+      train.carriages.each { |c| puts c }
+    end
   rescue RuntimeError => e
     puts "#{e.message}. попробуйте еще раз"
   end
@@ -176,16 +179,16 @@ class Storage
     puts "#{e.message}. попробуйте еще раз"
   end
 
-  def take_seat_to_carriage(number, seat)
+  def take_seat_to_carriage(number)
     carriage = find_carriage(number)
-    raise 'вагон не пассажирский' unless carriage.type == 'cargo'
+    raise 'вагон не пассажирский' unless carriage.type == 'passenger'
 
-    carriage.take_seat(seat)
+    carriage.take_seat
   rescue RuntimeError => e
     puts "#{e.message}. попробуйте еще раз"
   end
 
-  # методы требуются только внутри класса
+  # методы требуются только внутри класса,
 
   def show_data(name, arr)
     puts "#{name} list: "

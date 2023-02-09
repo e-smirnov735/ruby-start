@@ -24,7 +24,7 @@ class CargoCarriage < Carriage
   end
 
   def to_s
-    super + "Общий объём: #{total_volume}"
+    super + "занятый объём: #{loaded_volume}\tсвободный объём: #{free_volume}"
   end
 
   protected

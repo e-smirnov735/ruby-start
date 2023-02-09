@@ -187,9 +187,7 @@ class Control
   def take_seat_to_carriage
     puts 'введите номер вагона: '
     number = gets.chomp
-    puts 'введите количество мест: '
-    volume = gets.chomp.to_i
-    @storage.take_seat_to_carriage(number, volume)
+    @storage.take_seat_to_carriage(number)
   end
 
   def seed
@@ -210,10 +208,12 @@ class Control
     @storage.create_passenger_carriage('passenger', '6666', 220)
     @storage.add_carriage_to_train('passenger', '9999', 'AS3-WW')
     @storage.add_carriage_to_train('cargo', '1234', 'AA1-FF')
-    @storage.find_carriage('1234')
+    @storage.add_carriage_to_train('passenger', '6666', 'AS3-WW')
+    @storage.add_carriage_to_train('cargo', '5555', 'AA1-FF')
 
     @storage.add_station_to_route('sochi', 'msk - spb')
     @storage.set_route_to_train('msk - spb', 'AA1-FF')
+    @storage.set_route_to_train('msk - spb', 'AS3-WW')
     @storage.go_to_next_station('AA1-FF')
     @storage.go_to_previous_station('AA1-FF')
 

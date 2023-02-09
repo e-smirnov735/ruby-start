@@ -18,7 +18,7 @@ STORAGE_ERRORS = {
   route_not_found: 'маршрут с таким именем не найден',
   train_not_found: 'поезд с таким номером не найден',
   station_not_found: 'станция с таким именем не найдена',
-  carriage_not_found: 'вагон с таким номером не найден',
+  carriage_not_found: 'вагон с таким номером не найден'
 
 }.freeze
 
@@ -167,6 +167,24 @@ class Storage
     puts "#{e.message}. попробуйте еще раз"
   end
 
+  def add_volume_to_carriage(number, volume)
+    carriage = find_carriage(number)
+    raise 'вагон не грузовой' unless carriage.type == 'cargo'
+
+    carriage.upload_volume(volume)
+  rescue RuntimeError => e
+    puts "#{e.message}. попробуйте еще раз"
+  end
+
+  def take_seat_to_carriage(number, seat)
+    carriage = find_carriage(number)
+    raise 'вагон не пассажирский' unless carriage.type == 'cargo'
+
+    carriage.take_seat(seat)
+  rescue RuntimeError => e
+    puts "#{e.message}. попробуйте еще раз"
+  end
+
   # методы требуются только внутри класса
 
   def show_data(name, arr)
@@ -223,5 +241,4 @@ class Storage
   def carriage_exist?(number)
     @carriages.find { |c| c.number == number }
   end
-
 end

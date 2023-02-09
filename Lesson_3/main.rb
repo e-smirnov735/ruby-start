@@ -18,6 +18,8 @@ START_MENU = {
   12 => 'просмотреть список станций, список поездов, список маршрутов',
   13 => 'Узнать какие поезда стоят на станции',
   14 => 'Узнать какие вагоны прицеплены к поезду',
+  15 => 'загрузить вагон',
+  16 => 'забронированить места в вагона',
   0 => 'Выход'
 }.freeze
 
@@ -57,6 +59,8 @@ class Control
     when '12' then @storage.show_info
     when '13' then show_station_trains
     when '14' then show_train_carriages
+    when '15' then add_volume_to_carriage
+    when '16' then take_seat_to_carriage
     when '0'
       'exit'
     else
@@ -170,6 +174,22 @@ class Control
     puts 'введите номер поезда: '
     number = gets.chomp
     @storage.show_train_carriages(number)
+  end
+
+  def add_volume_to_carriage
+    puts 'введите номер вагона: '
+    number = gets.chomp
+    puts 'введите объем груза: '
+    volume = gets.chomp.to_f
+    @storage.add_volume_to_carriage(number, volume)
+  end
+
+  def take_seat_to_carriage
+    puts 'введите номер вагона: '
+    number = gets.chomp
+    puts 'введите количество мест: '
+    volume = gets.chomp.to_i
+    @storage.take_seat_to_carriage(number, volume)
   end
 
   def seed

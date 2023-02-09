@@ -8,10 +8,17 @@ class Carriage
   include Validator
   include Manufacturer
 
-  attr_accessor :type
+  attr_accessor :type, :is_attached
+  attr_reader :number
 
-  def initialize(type)
+  def initialize(type, number)
     @type = type
+    @number = number
+    @is_attached = false
+  end
+
+  def to_s
+    "Вагон №: #{number}\tтип: #{type}\t"
   end
 
   protected

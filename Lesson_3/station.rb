@@ -39,6 +39,14 @@ class Station
     @trains.delete(train) if train.is_a?(Train)
   end
 
+  def iteration(&block)
+    if @trains.empty?
+      puts 'На станции поездов нет'
+    else
+      @trains.each(&block)
+    end
+  end
+
   def to_s
     "Станция: #{@name}\tколичество поездов: #{trains.size} (#{trains.map(&:number).join(',')})"
   end

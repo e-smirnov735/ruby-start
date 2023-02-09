@@ -12,21 +12,25 @@ STORAGE_ERRORS = {
   station_exist: 'такая станция уже существует',
   train_exist: 'поезд с таким номером уже существует',
   route_exist: 'такой маршрут уже существует',
+  carriage_exist: 'вагон с таким номером уже существует',
   wrong_train_type: 'неправильный указан тип поезда',
   wrong_carriage_type: 'неправильный указан тип вагона',
   route_not_found: 'маршрут с таким именем не найден',
   train_not_found: 'поезд с таким номером не найден',
-  station_not_found: 'станция с таким именем не найдена'
+  station_not_found: 'станция с таким именем не найдена',
+  carriage_not_found: 'вагон с таким номером не найден',
+
 }.freeze
 
 # Storage class
 class Storage
-  attr_reader :trains, :stations, :routes
+  attr_reader :trains, :stations, :routes, :carriages
 
   def initialize
     @stations = []
     @trains = []
     @routes = []
+    @carriages = []
   end
 
   def create_station(name)
@@ -62,6 +66,26 @@ class Storage
     puts "#{e.message}. попробуйте еще раз"
   end
 
+  def create_cargo_carriage(type, number, volume)
+    raise STORAGE_ERRORS[:carriage_exist] if carriage_exist?(number)
+
+    carriage = CargoCarriage.new(type, number, volume)
+    @carriages.push(carriage)
+    puts "Создан #{carriage}"
+  rescue RuntimeError => e
+    puts "#{e.message}. попробуйте еще раз"
+  end
+
+  def create_passenger_carriage(type, number, volume)
+    raise STORAGE_ERRORS[:carriage_exist] if carriage_exist?(number)
+
+    carriage = PassengerCarriage.new(type, number, volume)
+    @carriages.push(carriage)
+    puts "Создан #{carriage}"
+  rescue RuntimeError => e
+    puts "#{e.message}. попробуйте еще раз"
+  end
+
   def add_station_to_route(station_name, route_name)
     station = find_station(station_name)
     route = find_route(route_name)
@@ -86,20 +110,22 @@ class Storage
     puts "#{e.message}. попробуйте еще раз"
   end
 
-  def add_carriage_to_train(carriage_type, train_number)
+  def add_carriage_to_train(carriage_type, carriage_number, train_number)
     raise STORAGE_ERRORS[:wrong_carriage_type] unless %w[cargo passenger].include?(carriage_type)
 
-    carriage = CargoCarriage.new(carriage_type) if carriage_type == 'cargo'
-    carriage = PassengerCarriage.new(carriage_type) if carriage_type == 'passenger'
+    carriage = find_carriage(carriage_number)
     train = find_train(train_number)
     train.add_carriage(carriage)
+    carriage.is_attached = true
   rescue RuntimeError => e
     puts "#{e.message}. попробуйте еще раз"
   end
 
-  def remove_carriage_from_train(train_number)
+  def remove_carriage_from_train(train_number, carriage_number)
     train = find_train(train_number)
-    train.remove_carriage
+    carriage = find_carriage(carriage_number)
+    train.remove_carriage(carriage)
+    carriage.is_attached = false
   rescue RuntimeError => e
     puts "#{e.message}. попробуйте еще раз"
   end
@@ -123,10 +149,25 @@ class Storage
     show_data('trains', @trains)
     show_data('stations', @stations)
     show_data('routes', @routes)
+    show_data('carriages', @carriages)
     puts '-' * 10
   end
 
-  private # методы требуются только внутри класса
+  def show_station_trains(name)
+    station = find_station(name)
+    station.iteration { |train| puts train }
+  rescue RuntimeError => e
+    puts "#{e.message}. попробуйте еще раз"
+  end
+
+  def show_train_carriages(number)
+    train = find_train(number)
+    train.iteration { |carriages| puts carriages }
+  rescue RuntimeError => e
+    puts "#{e.message}. попробуйте еще раз"
+  end
+
+  # методы требуются только внутри класса
 
   def show_data(name, arr)
     puts "#{name} list: "
@@ -159,6 +200,13 @@ class Storage
     result
   end
 
+  def find_carriage(number)
+    result = @carriages.find { |c| c.number == number }
+    raise STORAGE_ERRORS[:carriage_not_found] unless result
+
+    result
+  end
+
   def train_exist?(number)
     @trains.any? { |tr| tr.number == number }
   end
@@ -170,6 +218,10 @@ class Storage
 
   def station_exist?(name)
     @stations.find { |st| st.name == name }
+  end
+
+  def carriage_exist?(number)
+    @carriages.find { |c| c.number == number }
   end
 
 end

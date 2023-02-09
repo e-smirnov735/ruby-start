@@ -106,11 +106,11 @@ class Train
     @carriages.push(carriage)
   end
 
-  def remove_carriage
+  def remove_carriage(carriage)
     raise TRAIN_ERRORS[:train_in_motion] if @speed.positive?
     raise TRAIN_ERRORS[:no_carriages] if @carriages.empty?
 
-    @carriages.pop
+    @carriages.delete(carriage)
   end
 
   def up_speed
@@ -119,6 +119,14 @@ class Train
 
   def down_speed
     @speed = 0
+  end
+
+  def iteration(&block)
+    if @carriages.empty?
+      puts 'вагонов нет'
+    else
+      @carriages.each(&block)
+    end
   end
 
   def to_s

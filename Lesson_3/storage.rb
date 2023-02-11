@@ -163,9 +163,9 @@ class Storage
     puts "#{e.message}. попробуйте еще раз"
   end
 
-  def load_to_carriage(number, _volume)
+  def load_to_carriage(number, volume)
     carriage = find_carriage(number)
-    carriage.type == 'cargo' ? carriage.take_place(vulume) : carriage.take_place
+    carriage.type == 'cargo' ? carriage.take_place(volume) : carriage.take_place
   rescue RuntimeError => e
     puts "#{e.message}. попробуйте еще раз"
   end

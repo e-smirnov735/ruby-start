@@ -4,37 +4,28 @@ require_relative 'carriage'
 
 # Cargo Carriage
 class CargoCarriage < Carriage
-  attr_accessor :total_volume
-  attr_reader :loaded_volume
-
-  def initialize(type, number, total_volume = 50_000)
-    super(type, number)
-    @total_volume = total_volume
-    @loaded_volume = 0
+  def initialize(number, total_place)
+    super(number, total_place)
+    @type = 'cargo'
+    validate!
   end
 
-  def upload_volume(volume)
-    raise 'превышение вместимости' if loaded_volume + volume > total_volume
+  def take_place(place)
+    raise 'превышение вместимости' if used_place + place > total_place
 
-    self.loaded_volume += volume
-  end
-
-  def free_volume
-    total_volume - loaded_volume
+    self.used_place += place
   end
 
   def to_s
-    super + "занятый объём: #{loaded_volume}\tсвободный объём: #{free_volume}"
+    super + "занятый объём: #{used_place}\tсвободный объём: #{free_place}"
   end
 
   protected
 
-  attr_writer :loaded_volume
-
   def validate!
     super
     raise 'Ошибка: неправильный тип вагона' unless type == 'cargo'
-    raise 'Ошибка: параметром оъёма вагона является число' unless total_volume.is_a?(Numeric)
-    raise 'Ошибка: вместимость меньше, чем уже загружено' if (total_volume - loaded_volume).negative?
+    raise 'Ошибка: параметром оъёма вагона является число' unless total_place.is_a?(Numeric)
+    raise 'Ошибка: вместимость меньше, чем уже загружено' if (total_place - used_place).negative?
   end
 end

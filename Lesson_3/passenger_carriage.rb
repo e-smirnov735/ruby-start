@@ -4,37 +4,26 @@ require_relative 'carriage'
 
 # Passenger Carriage
 class PassengerCarriage < Carriage
-  attr_accessor :total_seats
-  attr_reader :occupied_seats
-
-  def initialize(type, number, total_seats = 100)
-    super(type, number)
-    @total_seats = total_seats
-    @occupied_seats = 0
+  def initialize(number, total_place)
+    super(number, total_place)
+    @type = 'passenger'
+    validate!
   end
 
-  def take_seat
-    raise 'Ошибка: нет свободных мест' if occupied_seats == total_seats
+  def take_place
+    raise 'Ошибка: нет свободных мест' if used_place == total_place
 
-    self.occupied_seats += 1
-  end
-
-  def free_seats
-    total_seats - occupied_seats
+    self.used_place += 1
   end
 
   def to_s
-    super + "занято мест: #{free_seats}\tсвободно мест: #{occupied_seats}"
+    super + "занято мест: #{used_place}\tсвободных мест: #{free_place}"
   end
-
-  protected
-
-  attr_writer :occupied_seats
 
   def validate!
     super
     raise 'Ошибка: неправильный тип вагона' unless type == 'passenger'
-    raise 'Ошибка: количество мест передается в числовом формате' unless total_seats.is_a?(Integer)
-    raise 'Количество мест должно быть положительно' unless total_seats <= 0
+    raise 'Ошибка: количество мест передается в числовом формате' unless total_place.is_a?(Integer)
+    raise 'Количество мест должно быть положительно' if total_place <= 0
   end
 end

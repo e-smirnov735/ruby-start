@@ -42,12 +42,12 @@ class Storage
     puts "#{e.message}. попробуйте еще раз"
   end
 
-  def create_train(train_number, train_type)
-    raise STORAGE_ERRORS[:wrong_train_type] unless %w[cargo passenger].include?(train_type)
-    raise STORAGE_ERRORS[:train_exist] if train_exist?(train_number)
+  def create_train(number, type)
+    raise STORAGE_ERRORS[:wrong_train_type] unless %w[cargo passenger].include?(type)
+    raise STORAGE_ERRORS[:train_exist] if train_exist?(number)
 
-    train = CargoTrain.new(train_number, train_type) if train_type == 'cargo'
-    train = PassengerTrain.new(train_number, train_type) if train_type == 'passenger'
+    train = CargoTrain.new(number, type) if type == 'cargo'
+    train = PassengerTrain.new(number, type) if type == 'passenger'
 
     @trains.push(train)
     puts "Создан #{train}"
@@ -66,20 +66,13 @@ class Storage
     puts "#{e.message}. попробуйте еще раз"
   end
 
-  def create_cargo_carriage(type, number, volume)
+  def create_carriage(number, type, place)
+    raise STORAGE_ERRORS[:wrong_carriage_type] unless %w[cargo passenger].include?(type)
     raise STORAGE_ERRORS[:carriage_exist] if carriage_exist?(number)
 
-    carriage = CargoCarriage.new(type, number, volume)
-    @carriages.push(carriage)
-    puts "Создан #{carriage}"
-  rescue RuntimeError => e
-    puts "#{e.message}. попробуйте еще раз"
-  end
+    carriage = CargoCarriage.new(number, place) if type == 'cargo'
+    carriage = PassengerCarriage.new(number, place) if type == 'passenger'
 
-  def create_passenger_carriage(type, number, volume)
-    raise STORAGE_ERRORS[:carriage_exist] if carriage_exist?(number)
-
-    carriage = PassengerCarriage.new(type, number, volume)
     @carriages.push(carriage)
     puts "Создан #{carriage}"
   rescue RuntimeError => e
@@ -110,11 +103,11 @@ class Storage
     puts "#{e.message}. попробуйте еще раз"
   end
 
-  def add_carriage_to_train(carriage_type, carriage_number, train_number)
-    raise STORAGE_ERRORS[:wrong_carriage_type] unless %w[cargo passenger].include?(carriage_type)
-
+  def add_carriage_to_train(carriage_number, train_number)
     carriage = find_carriage(carriage_number)
     train = find_train(train_number)
+    raise STORAGE_ERRORS[:wrong_carriage_type] unless carriage.type == train.type
+
     train.add_carriage(carriage)
     carriage.is_attached = true
   rescue RuntimeError => e
@@ -170,20 +163,9 @@ class Storage
     puts "#{e.message}. попробуйте еще раз"
   end
 
-  def add_volume_to_carriage(number, volume)
+  def load_to_carriage(number, _volume)
     carriage = find_carriage(number)
-    raise 'вагон не грузовой' unless carriage.type == 'cargo'
-
-    carriage.upload_volume(volume)
-  rescue RuntimeError => e
-    puts "#{e.message}. попробуйте еще раз"
-  end
-
-  def take_seat_to_carriage(number)
-    carriage = find_carriage(number)
-    raise 'вагон не пассажирский' unless carriage.type == 'passenger'
-
-    carriage.take_seat
+    carriage.type == 'cargo' ? carriage.take_place(vulume) : carriage.take_place
   rescue RuntimeError => e
     puts "#{e.message}. попробуйте еще раз"
   end

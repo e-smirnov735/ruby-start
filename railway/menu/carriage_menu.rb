@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'menu_module'
+require_relative 'menu_starter_module'
 require_relative './../controllers/carriage_controller'
 
 # Train menu
 class CarriageMenu
-  include MenuModule
+  include MenuStarter
 
   def initialize
     @controller = CarriageController.new

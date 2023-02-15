@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# Menu module
-module MenuModule
+# Menu starter module
+module MenuStarter
   def start
     loop do
       show_menu

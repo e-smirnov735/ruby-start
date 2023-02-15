@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'menu_module'
+require_relative 'menu_starter_module'
 require_relative './../controllers/route_controller'
 
 # Route Menu
 class RouteMenu
-  include MenuModule
+  include MenuStarter
 
   def initialize
     @controller = RouteController.new

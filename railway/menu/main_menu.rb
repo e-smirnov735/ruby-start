@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'menu_module'
+require_relative 'menu_starter_module'
 require_relative 'train_menu'
 require_relative 'station_menu'
 require_relative 'route_menu'
@@ -8,7 +8,7 @@ require_relative 'carriage_menu'
 
 # Main Menu
 class MainMenu
-  include MenuModule
+  include MenuStarter
 
   def initialize
     @trains_menu = TrainMenu.new

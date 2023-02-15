@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative './../models/route'
+
 # Route controller
 class RouteController
   def initialize
@@ -26,8 +28,8 @@ class RouteController
     route = @storage.find_by_name(route_name, :routes)
     raise "Маршрут с именем #{route_name} не найден" unless route
 
-    train = find_by_number(train_number, :trains)
-    raise "Поезд с номером #{train_number} не найден" unless first_station
+    train = @storage.find_by_number(train_number, :trains)
+    raise "Поезд с номером #{train_number} не найден" unless train
 
     train.route = route
     puts "Маршрут #{route.name} назначен поезду с номером #{train.number}"

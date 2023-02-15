@@ -26,6 +26,8 @@ class CargoCarriage < Carriage
     super
     raise 'Ошибка: неправильный тип вагона' unless type == 'cargo'
     raise 'Ошибка: параметром оъёма вагона является число' unless total_place.is_a?(Numeric)
-    raise 'Ошибка: вместимость меньше, чем уже загружено' if (total_place - used_place).negative?
+    return unless (total_place - used_place).negative?
+
+    raise 'Ошибка: вместимость меньше, чем уже загружено'
   end
 end

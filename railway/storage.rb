@@ -29,4 +29,25 @@ class Storage
   def find_by_name(name, key)
     @store[key].detect { |x| x.name == name }
   end
+
+  def show_info
+    puts '-' * 10
+    show_data('trains', trains)
+    show_data('stations', stations)
+    show_data('routes', routes)
+    show_data('carriages', carriages)
+    puts '-' * 10
+  end
+
+  protected
+
+  def show_data(name, arr)
+    puts "#{name} list: "
+    if arr.empty?
+      puts "\tсписок пуст"
+      return
+    end
+
+    arr.each { |item| puts "\t#{item}" }
+  end
 end

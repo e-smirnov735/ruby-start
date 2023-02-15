@@ -39,7 +39,10 @@ class Carriage
   attr_writer :used_place
 
   def validate!
-    raise 'Неправильный тип вагона' unless %w[default cargo passenger].include?(type)
-    raise 'неправильный формат номера, номер состоит из 4 цифр' if number !~ CARRIAGE_EXP
+    raise 'Неправильный тип вагона' unless %w[default cargo
+                                              passenger].include?(type)
+    return unless number !~ CARRIAGE_EXP
+
+    raise 'неправильный формат номера, номер состоит из 4 цифр'
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'menu_module'
-require_relative './../controller/carriage_controller'
+require_relative './../controllers/carriage_controller'
 
 # Train menu
 class CarriageMenu
@@ -13,11 +13,16 @@ class CarriageMenu
 
   def menu
     {
-      1 => { description: 'Создать вагон', action: -> { add_train } },
-      2 => { description: 'Прицепить вагон к поезду', action: -> { add_carriage_to_train } },
-      3 => { description: 'Отцепить вагон от поезда', action: -> { remove_carriage_from_train } },
-      4 => { description: 'Загрузить грузовой вагон', action: -> { add_volume_to_carriage } },
-      5 => { description: 'Занять место в пассажирском вагоне', action: -> { take_seat_to_carriage } },
+      1 => { description: 'Создать вагон',
+             action: -> { create_carriage } },
+      2 => { description: 'Прицепить вагон к поезду',
+             action: -> { add_carriage_to_train } },
+      3 => { description: 'Отцепить вагон от поезда',
+             action: -> { remove_carriage_from_train } },
+      4 => { description: 'Загрузить грузовой вагон',
+             action: -> { add_volume_to_carriage } },
+      5 => { description: 'Занять место в пассажирском вагоне',
+             action: -> { ake_seat_to_carriage } },
       0 => { description: 'Вернуться к основному меню' }
     }
   end

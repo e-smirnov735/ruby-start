@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'menu_module'
-require_relative './../controller/train_controller'
+require_relative './../controllers/train_controller'
 
 # Train menu
 class TrainMenu
@@ -37,5 +37,10 @@ class TrainMenu
   def go_to_previous_station
     train_number = ask('введите номер поезда: ')
     @controller.go_to_previous_station(train_number)
+  end
+
+  def show_train_carriages
+    number = ask('введите номер поезда: ')
+    @storage.show_train_carriages(number)
   end
 end

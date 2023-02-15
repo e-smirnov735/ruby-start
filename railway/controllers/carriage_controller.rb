@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative './../models/cargo_carriage'
+require_relative './../models/passenger_carriage'
+
 # Carriage controller
 class CarriageController
   def initialize
@@ -8,7 +11,9 @@ class CarriageController
 
   def create_carriage(number, type, place)
     raise 'Неправильный тип вагона' unless %w[cargo passenger].include?(type)
-    raise "Вагон с номером #{number} уже существует" if storage.find_by_number(number, :carriages)
+    raise "Вагон с номером #{number} уже существует" if @storage.find_by_number(
+      number, :carriages
+    )
 
     carriage = CargoCarriage.new(number, place) if type == 'cargo'
     carriage = PassengerCarriage.new(number, place) if type == 'passenger'
@@ -25,7 +30,7 @@ class CarriageController
 
     train = @storage.find_by_number(train_number, :trains)
     raise "Поезд с номером #{train_number} не найден" unless train
-    raise STORAGE_ERRORS[:wrong_carriage_type] unless carriage.type == train.type
+    raise STORAGE_ERRORS[:wrong_carriage_type] if carriage.type != train.type
 
     train.add_carriage(carriage)
     carriage.is_attached = true

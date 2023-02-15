@@ -19,11 +19,16 @@ class MainMenu
 
   def menu
     {
-      1 => { description: 'Операции с поездами', action: -> { @trains_menu.start } },
-      2 => { description: 'Операции со станциями', action: -> { @stations_menu.start } },
-      3 => { description: 'Операции с маршрутами', action: -> { @routes_menu.start } },
-      4 => { description: 'Операции с вагонами', action: -> { @carriages_menu.start } },
-      5 => { description: 'Вывод информации', action: -> { nil } },
+      1 => { description: 'Операции с поездами',
+             action: -> { @trains_menu.start } },
+      2 => { description: 'Операции со станциями',
+             action: -> { @stations_menu.start } },
+      3 => { description: 'Операции с маршрутами',
+             action: -> { @routes_menu.start } },
+      4 => { description: 'Операции с вагонами',
+             action: -> { @carriages_menu.start } },
+      5 => { description: 'Вывод информации',
+             action: -> { STORAGE.show_info } },
       0 => { description: 'Выход' }
     }
   end

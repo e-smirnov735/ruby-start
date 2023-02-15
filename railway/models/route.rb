@@ -42,6 +42,8 @@ class Route
 
   def validate!
     raise 'Ошибка: должно быть передано 2 параметра' if @start.nil? || @finish.nil?
-    raise 'Ошибка: параметры должны быть класса Station' unless @start.is_a?(Station) && @finish.is_a?(Station)
+    return if @start.is_a?(Station) && @finish.is_a?(Station)
+
+    raise 'Ошибка: параметры должны быть класса Station'
   end
 end

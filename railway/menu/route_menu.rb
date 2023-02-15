@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'menu_module'
-require_relative './../controller/route_controller'
+require_relative './../controllers/route_controller'
 
 # Route Menu
 class RouteMenu
@@ -13,8 +13,10 @@ class RouteMenu
 
   def menu
     {
-      1 => { description: 'Создать маршрут', action: -> { create_route } },
-      2 => { description: 'Назначить маршрут поезду', action: -> { add_station_to_route } },
+      1 => { description: 'Создать маршрут',
+             action: -> { create_route } },
+      2 => { description: 'Назначить маршрут поезду',
+             action: -> { add_station_to_route } },
       0 => { description: 'Вернуться к основному меню' }
     }
   end

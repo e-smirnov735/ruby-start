@@ -1,2 +1,15 @@
+AllCops:
+  Exclude: 
+  - test.rb
+  
+Style/Encoding:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 100
+
 Style/ClassVars:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
   Enabled: false

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'menu_module'
-require_relative './../controller/station_controller'
+require_relative './../controllers/station_controller'
 
 # Station Menu
 class StationMenu
@@ -13,9 +13,12 @@ class StationMenu
 
   def menu
     {
-      1 => { description: 'создать станцию', action: -> { add_station } },
-      2 => { description: 'Добавить станцию в маршрут', action: -> { add_station_to_route } },
-      3 => { description: 'Убрать станцию из маршрута', action: -> { remove_station_from_route } },
+      1 => { description: 'создать станцию',
+             action: -> { add_station } },
+      2 => { description: 'Добавить станцию в маршрут',
+             action: -> { add_station_to_route } },
+      3 => { description: 'Убрать станцию из маршрута',
+             action: -> { remove_station_from_route } },
       0 => { description: "Вернуться к основному меню\n" }
     }
   end
@@ -35,5 +38,10 @@ class StationMenu
     station_name = ask('введите название станции: ')
     route_name = ask('введите маршрут из которого убрать станцию')
     @controller.remove_station_on_route(station_name, route_name)
+  end
+
+  def show_station_trains
+    name = ask('введите название станции: ')
+    @controller.show_station_trains(name)
   end
 end

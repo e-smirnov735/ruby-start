@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 START_MENU = {
   1 => 'создать станцию',
   2 => 'создать поезд',

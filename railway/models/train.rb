@@ -2,7 +2,7 @@
 
 require_relative './../helpers/manufacturer'
 require_relative './../helpers/instance_counter'
-require_relative './../helpers/validator'
+require_relative './../helpers/validation'
 
 TRAIN_ERRORS = {
   station_last: 'Ошибка: конечная станция',
@@ -21,12 +21,15 @@ NUMBER_EXP = /^[0-9a-z]{3}-?[0-9a-z]{2}$/i.freeze
 class Train
   include InstanceCounter
   include Manufacturer
-  include Validator
+  include Validation
 
   @@train_instances = []
 
   attr_reader :speed, :carriages, :route
   attr_accessor :number, :type
+
+  validate :number, :presense
+  validate :number, :format, NUMBER_EXP
 
   init_counter
 
@@ -132,10 +135,10 @@ class Train
 
   protected # метод необходим только самому классу и потомкам
 
-  def validate!
-    raise TRAIN_ERRORS[:number_is_nil] if number.nil?
-    raise TRAIN_ERRORS[:wrong_number] if number !~ NUMBER_EXP
-  end
+  # def validate!
+  #   raise TRAIN_ERRORS[:number_is_nil] if number.nil?
+  #   raise TRAIN_ERRORS[:wrong_number] if number !~ NUMBER_EXP
+  # end
 
   def set_default_parameters
     @speed = 0

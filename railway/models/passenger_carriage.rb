@@ -4,6 +4,9 @@ require_relative 'carriage'
 
 # Passenger Carriage
 class PassengerCarriage < Carriage
+  validate :number, :format, CARRIAGE_EXP
+  validate :total_place, :type, Integer
+
   def initialize(number, total_place)
     super(number, total_place)
     @type = 'passenger'
@@ -22,8 +25,7 @@ class PassengerCarriage < Carriage
 
   def validate!
     super
-    raise 'Ошибка: неправильный тип вагона' unless type == 'passenger'
-    raise 'Ошибка: количество мест передается в числовом формате' unless total_place.is_a?(Integer)
+    raise 'from carriage Ошибка: неправильный тип вагона' unless type == 'passenger'
     raise 'Количество мест должно быть положительно' if total_place <= 0
   end
 end

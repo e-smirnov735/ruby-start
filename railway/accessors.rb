@@ -34,8 +34,3 @@ module Accessors
   end
 end
 
-class Test
-  extend Accessors
-  attr_accessor_with_history :a, :b, :c
-  strong_attr_accessor :cl, String
-end

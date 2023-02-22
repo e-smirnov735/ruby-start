@@ -4,6 +4,9 @@ require_relative 'train'
 
 # Cargo Train
 class CargoTrain < Train
+  validate :number, :presense
+  validate :number, :format, NUMBER_EXP
+
   protected
 
   def validate!

@@ -2,14 +2,19 @@
 
 require_relative 'station'
 require_relative './../helpers/instance_counter'
-require_relative './../helpers/validator'
+require_relative './../helpers/validation'
 
 # class Route
 class Route
   include InstanceCounter
-  include Validator
+  include Validation
   attr_reader :stations, :name
   attr_accessor :start, :finish
+
+  validate :start, :presense
+  validate :finish, :presense
+  validate :start, :type, Station
+  validate :finish, :type, Station
 
   init_counter
 
@@ -36,14 +41,5 @@ class Route
 
   def to_s
     show_stations
-  end
-
-  protected
-
-  def validate!
-    raise 'Ошибка: должно быть передано 2 параметра' if @start.nil? || @finish.nil?
-    return if @start.is_a?(Station) && @finish.is_a?(Station)
-
-    raise 'Ошибка: параметры должны быть класса Station'
   end
 end

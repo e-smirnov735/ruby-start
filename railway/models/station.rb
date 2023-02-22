@@ -2,12 +2,14 @@
 
 require_relative 'train'
 require_relative './../helpers/instance_counter'
-require_relative './../helpers/validator'
+require_relative './../helpers/validation'
 
 # class Station
 class Station
   include InstanceCounter
-  include Validator
+  include Validation
+
+  validate :name, :presense
 
   @@station_instances = []
   attr_reader :trains
@@ -49,12 +51,5 @@ class Station
 
   def to_s
     "Станция: #{@name}\tколичество поездов: #{trains.size} (#{trains.map(&:number).join(',')})"
-  end
-
-  protected
-
-  def validate!
-    raise 'Ошибка: имя не может быть пустым' if name.nil?
-    raise 'Ошибка: слишком короткое имя' if name.length < 3
   end
 end

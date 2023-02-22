@@ -9,24 +9,7 @@ module Validation
 
     def validate(name, type, arg = nil)
       @validations ||= []
-      var = instance_variable_get("@#{name}")
-      @validations.push({ type: type, params: [var, arg] })
-      p @validations
-      ps self.class.validations
-    end
-
-    protected
-
-    def presense(name)
-      'Имя не должно быть пустым' if name.nil? || name.to_s.strip.empty?
-    end
-
-    def format(name, arg)
-      -> { 'Неправильный формат' if name !~ arg }
-    end
-
-    def type(name, arg)
-      'Несоответствие типа' unless name.instance_of?(arg)
+      @validations.push([name, type, arg])
     end
   end
 
@@ -38,13 +21,35 @@ module Validation
       false
     end
 
-    def validate!
-      errors = []
-      self.class.validations.each do |validate|
-        errors << send(validate[:type], *validate[:params])
-      end
+    protected
 
-      raise puts errors.compact if errors.any?
+    def presense(name)
+      raise 'ОШИБКА! Имя не должно быть пустым' if name.nil? || name.to_s.strip.empty?
+    end
+
+    def format(name, arg)
+      raise 'ОШИБКА! Неправильный формат' unless name.match(arg)
+    end
+
+    def type_of(name, arg)
+      raise 'ОШИБКА! Несоответствие типа' unless name.instance_of?(arg)
+    end
+
+    def validate!
+      self.class.validations.each do |params|
+        name = instance_variable_get("@#{params[0]}")
+        type = params[1]
+        arg = params[2]
+
+        case type
+        when :presense
+          presense(name)
+        when :format
+          format(name, arg)
+        when :type
+          type_of(name, arg)
+        end
+      end
     end
   end
 end

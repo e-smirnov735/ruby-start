@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 require_relative './../helpers/manufacturer'
-require_relative './../helpers/validator'
-
-CARRIAGE_EXP = /^\d{4}$/.freeze
+require_relative './../helpers/validation'
 
 # Carriage base
 class Carriage
-  include Validator
+  include Validation
   include Manufacturer
+
+  CARRIAGE_EXP = /^\d{4}$/.freeze
 
   attr_accessor :type, :is_attached
   attr_reader :number, :total_place, :used_place
@@ -37,12 +37,4 @@ class Carriage
   protected
 
   attr_writer :used_place
-
-  def validate!
-    raise 'Неправильный тип вагона' unless %w[default cargo
-                                              passenger].include?(type)
-    return unless number !~ CARRIAGE_EXP
-
-    raise 'неправильный формат номера, номер состоит из 4 цифр'
-  end
 end

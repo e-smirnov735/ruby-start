@@ -28,9 +28,6 @@ class Train
   attr_reader :speed, :carriages, :route
   attr_accessor :number, :type
 
-  validate :number, :presense
-  validate :number, :format, NUMBER_EXP
-
   init_counter
 
   def initialize(number, type)
@@ -134,11 +131,6 @@ class Train
   end
 
   protected # метод необходим только самому классу и потомкам
-
-  # def validate!
-  #   raise TRAIN_ERRORS[:number_is_nil] if number.nil?
-  #   raise TRAIN_ERRORS[:wrong_number] if number !~ NUMBER_EXP
-  # end
 
   def set_default_parameters
     @speed = 0
